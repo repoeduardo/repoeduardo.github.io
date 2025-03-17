@@ -34,7 +34,7 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Eduardo Araujo Da Silva
+  name: Eduardo Araujo
   email: eduardoaraujodasilva@protonmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
@@ -88,7 +88,7 @@ pageviews:
 #     light — Use the light color scheme
 #     dark — Use the dark color scheme
 #
-theme_mode: # [light | dark]
+theme_mode: dark # [light | dark]
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url
@@ -96,6 +96,8 @@ theme_mode: # [light | dark]
 #
 # e.g. 'https://cdn.com'
 cdn:
+
+favicon: /assets/img/favicon.ico
 
 # the avatar on sidebar, support local or CORS resources
 avatar: https://avatars.githubusercontent.com/u/197165579?v=4
@@ -183,7 +185,7 @@ defaults:
       # to update the code of all other post links in this project.
       permalink: /posts/:title/
   - scope:
-      path: _drafts
+      path: /assets/img/favicons/
     values:
       comments: false
   - scope:
