@@ -16,7 +16,7 @@ timezone:
 
 title: Eduardo # the main title
 
-tagline: Blog pessoal # it will display as the subtitle
+tagline: Bem vindo! Aqui dou dicas programação e segurança # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Blog pessoal para ajudar a comunidade de programadores e entusiastas de segurança.

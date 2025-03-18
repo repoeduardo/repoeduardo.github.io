@@ -2,11 +2,10 @@
 title: "CSRF: Introdução"
 author: "Eduardo Araujo"
 categories: [Segurança]
-tags: [web, js, javascript, csrf, bugbounty]
+tags: [web, js, javascript, csrf, bugbounty, lab, ngrok, html, get]
 render_with_liquid: false
-media_subpath: /images/seguranca/csrf/
 image:
-  path: csrf.svg
+  path:  /images/seguranca/csrf/csrf.svg
 ---
 
 Cross-Site Request Forgery (CSRF) é uma vulnerabilidade que permite que um atacante force um usuário autenticado a executar ações indesejadas em um site sem que ele perceba. O ataque explora a confiança que o site tem na sessão autenticada do usuário (geralmente via cookies), enviando requisições maliciosas em nome dele
