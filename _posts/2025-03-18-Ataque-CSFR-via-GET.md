@@ -5,7 +5,7 @@ categories: [Segurança]
 tags: [web, js, javascript, csrf, bugbounty]
 render_with_liquid: false
 image:
-  path: /images/seguranca/csrf/csrf.svg
+  path: /images/seguranca/csrf/csrf_via_get.svg
 ---
 
 
