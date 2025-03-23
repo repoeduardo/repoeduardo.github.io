@@ -2,7 +2,7 @@
 title: "CSRF: Introdução"
 author: "Eduardo Araujo"
 categories: [Segurança]
-tags: [web, js, javascript, csrf, bugbounty, lab, ngrok, html, get]
+tags: [web, js, javascript, csrf, bugbounty, ngrok]
 render_with_liquid: false
 image:
   path:  /images/seguranca/csrf/csrf.svg

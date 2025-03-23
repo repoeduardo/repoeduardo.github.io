@@ -33,6 +33,7 @@ Exemplo de resposta de um servidor que permite acesso somente de **example.com**
 ~~~http
 Access-Control-Allow-Origin: https://example.com
 ~~~
+
 Se qualquer outro site tentar acessar a API, o navegador bloqueia a requisição.
 
 Já um servidor totalmente aberto pode permitir requisições de qualquer origem com:
@@ -42,7 +43,7 @@ Access-Control-Allow-Origin: *
 ~~~
 
 
-### CABEÇALHOS
+### HEADERS - CABEÇALHOS
 
 **Access-Control-Allow-Origin:** Define quais origens podem acessar o recurso (ex: * ou http://exemplo.com);
 
@@ -113,7 +114,7 @@ fetch("https://api.exemplo.com/dados", { credentials: "include" })
 
 ## COMO EXPLORAR
 
-Geralmente falhas em CORS se devem a configurações mau feitas pelos desenvolvedores. Essas "Misconfigurations" no CORS podem expor dados sensíveis ou permitir ataques.
+Geralmente falhas em CORS se devem a configurações mau feitas pelos desenvolvedores. Essas *Misconfigurations* no CORS podem expor dados sensíveis ou permitir ataques.
 
 ### Access-Control-Allow-Origin *
 

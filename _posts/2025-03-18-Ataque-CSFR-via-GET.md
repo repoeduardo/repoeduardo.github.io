@@ -2,7 +2,7 @@
 title: "CSRF: Ataque via GET"
 author: "Eduardo Araujo"
 categories: [Segurança]
-tags: [web, js, javascript, csrf, bugbounty]
+tags: [web, js, javascript, csrf, bugbounty, ngrok]
 render_with_liquid: false
 image:
   path: /images/seguranca/csrf/csrf_via_get.svg
