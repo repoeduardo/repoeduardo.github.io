@@ -421,7 +421,7 @@ Dê um `cat` nesses arquivos e veja qual tem conteúdo com `Miner` sendo executa
 **What is the wallet address of the miner instance?**
 *Tradução: Qual é o endereço da carteira da instância mineradora?*
 
-Bom, agora pelo contexto da pergunta é possível ver que estamos lidando com carteiras de criptomoedas e mineração. No próprio arquivo de log, nas primeiras linhas você vai encontra um `ID: <numero randomico gigante>` esse é o endereço da carteira. Mas endereços de carteira são codificadas. Então use decodificadores online que identifiquem essa codificação automáticamente, como o site do [CyberChef](http://toolbox.itsec.tamu.edu/). Você vai reparar que vai ser gerado dois endereços, mas apenas um deles é correto.
+Bom, agora pelo contexto da pergunta é possível ver que estamos lidando com carteiras de criptomoedas e mineração. No próprio arquivo de log, nas primeiras linhas você vai encontra um `ID: <numero randomico gigante>` esse é o endereço da carteira. Mas endereços de carteira são codificadas. Então use decodificadores online que identifiquem essa codificação automáticamente, como o site do [CyberChef](https://gchq.github.io/CyberChef/). Você vai reparar que vai ser gerado dois endereços, mas apenas um deles é correto.
 
 
 ## QUESTÃO 06
