@@ -5,10 +5,52 @@ categories: [SIEM]
 tags: [siem, splunk, logs]
 render_with_liquid: false
 image:
-  path: /images/seguranca/cors/cors.svg
+  path: /images/seguranca/siem/splunk/installation-configuration/splunk.svg
 ---
 
+
+## O que é o Splunk?
+
+Para entender o que é o Splunk, antes você deve entender o que é um SIEM. 
+
+### O que é um SIEM?
+
+Um SIEM - do inglês *Security Information and Event Management* - é uma aplicação que coleta e analiza dados de logs para monitorar atividades críticas de uma organização. Ele faz isso coletando, analisando e reportando através de dados de múltiplas fontes. **Mas como acontece esse processo de coleta e analise?**
+
+![siem-process](../images/seguranca/siem/splunk/installation-configuration/siem-process.png)
+
+Primeiro o SIEM **Coleta e Processa** uma enorme quantidade de dados gerados por dispositivos e sistemas de todo ambiente da organização. Esses dados não são iguais, porque dispositivos geram dados de formatos diferentes. O SIEM tem a capacidade de ler e analisar esses tipos de formatos diferentes através de um processo de **Normalização**. Os *raw datas* - dados brutos - são processados ​​para que sejam formatados de forma consistente e apenas informações relevantes sobre os eventos sejam incluídas. Por fim, o SIEM **Indexa** os dados para que possam ser acessados ​​por meio de consultas. Todos os eventos em todas as diferentes fontes podem ser acessados.
+
+**O Splunk é uma solução de segurança cibernética da empresa Cisco que combina gerenciamento de informações de segurança (SIM) e gerenciamento de eventos de segurança (SEM)**. Ele é usado para coletar, armazenar, analisar e correlacionar dados de logs de diferentes fontes em uma rede, como servidores, dispositivos de rede, firewalls, sistemas de detecção de intrusão e aplicativos em tempo real
+
+
 ## Como instalar e executar o Splunk
+
+### Considerações iniciais
+
+⚠️ esse documento foi criado seguindo somente a documentação oficial fornecida pelo [Splunk](https://docs.splunk.com/Documentation?_gl=1*16526cv*_gcl_au*MTMyNTU1ODM4MS4xNzUwNjEzMjcw*FPAU*MTMyNTU1ODM4MS4xNzUwNjEzMjcw*_ga*MTQyNzI2MTQxNi4xNzUwNjEzMjY5*_ga_5EPM2P39FV*czE3NTA2MTkwOTIkbzIkZzEkdDE3NTA2MTkzNzkkajQ5JGwwJGg5ODQwMDg2MDE.*_fplc*UGt2SjQwaUExRSUyRlNqZUtBTzkzQkRnbHlDU0VscEVnUSUyQkpqUDVjclh5UlhGU1Z5WWIxQnprSjJZREJrQVBoalRDeGFuZklWTEFybUhYejA4VU1MSXNBQTdMazl0N2o0bWN0TUdQNWJBQ2ZTJTJGQTZyVXZRQ0o3aFFLbFcyaDFnJTNEJTNE)
+
+Nesse guia será instalado e configurado o Splunk Enterprise em uma VPS com Linux. Também será instalado um Universal Forwarder em uma maquina virtual com Ubuntu Server para atuar como um "coletor" de logs. Contudo, é possível instalar o Splunk Enterprise e Universal Forwarder em sistemas com Windows, o que muda obviamente é a forma de instalação e configuração.
+
+
+![siem-lab](../images/seguranca/siem/splunk/installation-configuration/siem-lab.png){: width="972" height="589" .w-50 .right}
+
+Hardware VPS:
+
+- Kernel: 6.8.0-60-generic
+- CPU: AMD EPYC Processor CPU @ 2.0GHz 6 core
+- Memória RAM: 12gb
+- Disco SSD: 200gb
+
+Splunk Enterprise:
+
+- Versão 9.4.3-237
+
+Verifique [aqui](https://help.splunk.com/en/splunk-enterprise/get-started/install-and-upgrade/9.3/plan-your-splunk-enterprise-installation/system-requirements-for-use-of-splunk-enterprise-on-premises) os requisitos de hardware para seu sistema
+
+
+
+
 
 ### Download na página oficial
 
@@ -130,7 +172,8 @@ Depois teste novamente com o outro arquivo: `source="tutorialdata.zip:*"`
 
 ### Universal Forwarders
 
-Os Universal Forwarders são como "agentes" coletadores de dados, ideal para coletar dados de sistemas remotos e enviar ao seu Splunk.
+O Splunk Universal Forwarder é uma versão otimizada e leve do Splunk Enterprise, projetada para coletar e encaminhar dados de diversas fontes para um servidor Splunk centralizado ou para o Splunk Cloud.
+Em outras palavras são como "agentes" coletadores de dados, ideal para coletar dados de sistemas remotos e enviar ao seu Splunk.
 
 
 #### Instalação em Linux
