@@ -138,7 +138,7 @@ A documentação oficial fornece dados "prontos" empacotados em arquivos .zip on
 Ou diretamente do meu repositório no Github
 
 ~~~bash
-wget https://github.com/repoeduardo/splunk/blob/main/tutorialdata.zip && wget https://github.com/repoeduardo/splunk/blob/main/Prices.csv.zip
+wget https://github.com/repoeduardo/splunk/blob/main/resources/tutorialdata.zip && wget https://github.com/repoeduardo/splunk/blob/main/resources/Prices.csv.zip
 ~~~
 
 
@@ -235,7 +235,7 @@ sudo $SPLUNK_HOME/bin/splunk start --accept-license
 
 ## O que fazer agora?
 
-A partir daqui você define quais tipos de dados pretende monitorar. Essa [página](https://help.splunk.com/en/splunk-enterprise/get-started/get-data-in/9.4/introduction/what-data-can-i-index) te auxiliar em como fazer isso. Por exemplo, você pode subir um software vulnerável onde o Forwarder está instalado para monitorar em tempo real possíveis ataques; você pode montar dashboards de acessos ssh; criar alertas e reports; criar dashboard de máquinas Windows (pra isso você precisa instalar o Forwarder em um Windows).
+A partir daqui você define quais tipos de dados pretende monitorar. Essa [página](https://help.splunk.com/en/splunk-enterprise/get-started/get-data-in/9.4/introduction/what-data-can-i-index) te ajuda a fazer isso. Por exemplo, você pode subir um software vulnerável onde o Forwarder está instalado para monitorar em tempo real possíveis ataques; você pode montar dashboards de acessos ssh; criar alertas e reports; criar dashboard de máquinas Windows (pra isso você precisa instalar o Forwarder em um Windows).
 
 A partir daqui você pode criar muitos tipos de laboratórios que te ajudam em seu objetivo.
 
