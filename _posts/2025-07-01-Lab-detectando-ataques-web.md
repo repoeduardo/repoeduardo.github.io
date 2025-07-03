@@ -2,7 +2,7 @@
 title: "Laboratório: Detecção de ataques Web, criação de alertas e remediação"
 author: "Eduardo Araujo"
 categories: [Portfolio]
-tags: [mitre_att&ck, lab, splunk, detection, ssh, directories, hydra, dirb, apache, DVWA]
+tags: [nist, mitre_att&ck, lab, splunk, detection, ssh, directories, hydra, dirb, apache, DVWA]
 render_with_liquid: false
 image:
   path: /images/seguranca/siem/splunk/installation-configuration/splunk.svg
@@ -13,7 +13,7 @@ image:
 O objetivo desse laboratório é aprender a configurar e entender como funciona a detecção de ataques em tempo real utilizando o SIEM [Splunk](https://www.splunk.com/), assim como entender quais procedimentos são adequados para remediar esses ataques. A idéia desse exercício foi colocado em prática após eu compreender conceitos importantes do Framework MITRE ATT&CK, sendo que serão abordadas as técnicas de Bruteforce denominadas [T1110](https://attack.mitre.org/techniques/T1110/) de acordo com o Framework, específicamente *Fuzzing* de diretórios com a ferramenta *Dirb* e bruteforce de senhas contra serviço de SSH utilizando a ferramenta *Hydra*
 
 
-## Identificando as jóias da coroa
+## Identificando os ativos importantes
 
 A idéia central é parecer ao máximo com o mundo real, portanto, vamos partir do pressuposto que você foi contratado por um cliente que deseja monitar a rede da empresa. O primeiro passo é conhecer a topologia e identificar os ativos mais importantes da empresa. 
 
@@ -129,6 +129,147 @@ sudo /opt/splunkforwarder/bin/splunk add monitor /var/log/apache2/access.log -so
 sudo /opt/splunkforwarder/bin/splunk add monitor /var/log/auth.log -sourcetype linux:audit
 ~~~
 
+### Melhorando a análise dos logs
+
+Apesar do Splunk receber os logs ele ainda não é capaz de extrair os *fields* - campos - que precisamos para analisar os ataques. Podemos melhorar isso realizando um *parsing* melhor dos logs. Isso é feito através de *regex* ou *Addons* do próprio Splunk
+
+<br>
+
+**CRIANDO UM REGEX PARA OS LOGS DA CAMADA DE SEGURANÇA DO LINUX**
+
+Por exemplo, para esse alguns logs do arquivo `auth.log` tem um certo padrão de estrutura:
+
+`2025-06-29T00:09:01.608069-03:00 srv-vuln CRON[1634]: pam_unix(cron:session): session closed for user root`
+
+Note que conseguimos ver data-hora, o host, o serviço e um corpo de mensagem.
+
+O seguinte Regex consegue extrair essas informações
+
+~~~txt
+^(?P<datetime>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}-\d{2}:\d{2})\s+(?P<hostname>\S+)\s+(?P<service>[^\s:]+(?:\[\d+\])?):\s+(?P<message>.*)
+~~~
+
+Na Aba de Search > Faça uma busca que contenha `sourcetype="linux:audit"` > Procure por *Extract new fields* > I prefer write regular expression my self > Cole a expressão regular > Save > Selecione All Apps > Finish
+
+<br>
+
+**ADDON PARA LOGS DO APACHE**
+
+*Acesse o Splunk > Apps > Find more apps > Splunk Add-on for Apache Web Server*
+
+![addon-apache](../images/seguranca/lab/ataques-web/addon-apache.png)
+
+
+## Purple Team
+
+![ciclo-purple-team](../images/seguranca/lab/ataques-web/purple-team-cicle.png)
+
+Agora que o ambiente está pronto é possível começar a fase de ataques para analisar como o Splunk se comporta, em seguida criar alertas, e revalidar para garantir que a detecção aconteceu. 
+
+
+### Brute-force SSH
+
+O ataque de SSH será feito com a ferramenta [Hydra](https://github.com/vanhauser-thc/thc-hydra) usando a wordlist *top-20-common-SSH-passwords.txt* disponível em [SecLists](https://github.com/danielmiessler/SecLists)
+
+💡 Assuma que o usuário do sistema seja `ubuntu`
+
+**Sintaxe:** hydra -l `[user]` -P `[wordlist]` ssh://``[host]``
+
+Realizando o ataque
+
+~~~bash
+hydra -l ubuntu -P top-20-common-SSH-passwords.txt ssh://192.168.15.16
+~~~
+
+![hydra-attack](../images/seguranca/lab/ataques-web/hydra-attack.png)
+
+
+O log gerado quando o usuário erra a senha SSH normalmente contém a frase "Failed password" então para criar a regra precisamos filtrar por ``index=* sourcetype="linux:audit" Failed password``
+
+![detecting-hydra-attack](../images/seguranca/lab/ataques-web/detecting-hydra-attack.png)
+
+Para ser mais exato a SPL para criar o alerta será esse. Onde depois de 10 tentativas de logins inválidas será disparado o alerta:
+
+~~~txt
+index=* sourcetype="linux:audit" Failed password | rex field=message "from\s(?<src_ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})" | stats count by src_ip host | where count > 10
+~~~
+
+<br>
+
+Cole a SPL na aba de *Search > Save As > Alert* 
+
+- Defina um titulo: ``[T1110] - Brute Force - Linux SSH``
+
+- Permissions: `Shared App`
+
+- Run on Cron Schedule: `*/1 * * * *`  (faz ele verificar a cada 1 minuto)
+
+- No campo Trigger selecione `For Each Result`
+
+- Marque a checkbox Throttle > No campo Suppress results containing field value: `src_ip,host`
+
+- Add Action > Add to Triggered Alerts
+
+
+Agora refaça o mesmo ataque com o Hydra e verifique se o Splunk detectou o ataque. O resultado deve ser esse:
+
+![alert-ssh](../images/seguranca/lab/ataques-web/activity-triggered-alert.png)
+
+Veja que é retornado IP do atacante e o número de tentativas inválidas nos campos `src_ip e count` respectivamente:
+
+![triggered-alert](../images/seguranca/lab/ataques-web/result-triggered-alert.png)
+
+
+### Brute-force de diretórios
+
+O ataque de brute-force de diretórios será feito com a ferramenta [Dirb](https://dirb.sourceforge.net/)
+
+Sintaxe: `dirb http://<host>`
+
+~~~bash
+dirb http://192.168.15.16
+~~~
+
+![fuzzing-directories](../images/seguranca/lab/ataques-web/fuzzing-directories.png)
+
+<br>
+
+Se tratando de servidores web uma das maneiras de entender se é uma tentativa de ataque é olhando o Status Code das requisições HTTP e as URL acessadas
+
+Verificando com Status Code 200 onde é retornado sucesso
+
+~~~txt
+index=* sourcetype="apache:access:combined" status=200 | stats count values(url) as url by src
+~~~
+
+![dirb-200](../images/seguranca/lab/ataques-web/dirb-result-200.png)
+
+Verificando com Status Code 404 onde é retornado erro por mais de 20 vezes
+
+~~~txt
+index=* sourcetype="apache:access:combined" status=404 | stats count values(url) as url by src | where count > 20
+~~~
+
+![dirb-404](../images/seguranca/lab/ataques-web/dirb-result-404.png)
+
+<br>
+
+Use essa SPL `index=* sourcetype="apache:access:combined" status=404 | stats count values(url) as url by src | where count > 20` para montar um novo alerta, refaça os mesmos passos anteriores. Depois de criar faça o ataque de diretórios novamente e verifique se o alerta foi disparado
+
+![triggered-alert-dirb](../images/seguranca/lab/ataques-web/activity-triggered-dirb.png)
+
+## Plano de resposta a incidente
+
+Meu plano de resposta ao incidente tem como referência as recomendações do [Framework NIST SP 800-61](https://www.nist.gov/privacy-framework/nist-sp-800-61)
+
+
+Guia detalhado: nesse [link](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf)
+
+
+![ir-lifecycle](../images/seguranca/lab/ataques-web/incident-response-life-cycle.png)
+
+Relatório em inglês: <a id="raw-url" href="https://raw.githubusercontent.com/github-username/project/master/filename">Download FILE</a>
+
 ## Referências
 
 - https://www.splunk.com/
@@ -136,6 +277,10 @@ sudo /opt/splunkforwarder/bin/splunk add monitor /var/log/auth.log -sourcetype l
 - https://attack.mitre.org/techniques/T1110/
 - https://github.com/digininja/DVWA
 - https://repoeduardo.github.io/posts/Splunk-Instalacao-Configuracao/
+- https://github.com/danielmiessler/SecLists
+- https://github.com/vanhauser-thc/thc-hydra
+- https://www.nist.gov/privacy-framework/nist-sp-800-61
+- https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf
 
 
 
