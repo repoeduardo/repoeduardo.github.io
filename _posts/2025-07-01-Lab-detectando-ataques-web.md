@@ -1,5 +1,5 @@
 ---
-title: "Laboratório: Detecção de ataques Web, criação de alertas e remediação"
+title: "Laboratório: detectando ataques, criando alertas e relatório de incidente"
 author: "Eduardo Araujo"
 categories: [Portfolio]
 tags: [nist, mitre_att&ck, lab, splunk, detection, ssh, directories, hydra, dirb, apache, DVWA]
