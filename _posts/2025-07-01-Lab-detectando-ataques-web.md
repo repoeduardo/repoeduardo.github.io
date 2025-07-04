@@ -5,7 +5,7 @@ categories: [Portfolio]
 tags: [nist, mitre_att&ck, lab, splunk, detection, ssh, directories, hydra, dirb, apache, DVWA]
 render_with_liquid: false
 image:
-  path: /images/seguranca/siem/splunk/installation-configuration/splunk.svg
+  path: /images/seguranca/lab/ataques-web/labalert.svg
 ---
 
 ## Overview do laboratório 
@@ -280,6 +280,7 @@ Relatório em [inglês](https://raw.githubusercontent.com/repoeduardo/repoeduard
 - https://www.splunk.com/
 - https://attack.mitre.org/
 - https://attack.mitre.org/techniques/T1110/
+- https://help.splunk.com/en/splunk-enterprise/alert-and-respond/alerting-manual/9.4/create-alerts/create-real-time-alerts
 - https://github.com/digininja/DVWA
 - https://repoeduardo.github.io/posts/Splunk-Instalacao-Configuracao/
 - https://github.com/danielmiessler/SecLists
