@@ -268,7 +268,12 @@ Guia detalhado: nesse [link](https://nvlpubs.nist.gov/nistpubs/SpecialPublicatio
 
 ![ir-lifecycle](../images/seguranca/lab/ataques-web/incident-response-life-cycle.png)
 
-Relatório em inglês: <a id="raw-url" href="https://raw.githubusercontent.com/github-username/project/master/filename">Download FILE</a>
+
+Relatório em [português](https://raw.githubusercontent.com/repoeduardo/repoeduardo.github.io/main/reports/lab-dvwa/relatorio_final.pdf)
+
+Relatório em [inglês](https://raw.githubusercontent.com/repoeduardo/repoeduardo.github.io/main/reports/lab-dvwa/final_report.pdf)
+
+
 
 ## Referências
 
