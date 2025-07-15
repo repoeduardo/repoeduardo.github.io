@@ -247,6 +247,8 @@ Sensor ID: <<limacharlie_detection.body.routing.sid>>
 Detection link: <<limacharlie_detection.body.link>>  
 ~~~
 
+![detection-result](../images/seguranca/lab/ad-soar-playbook/detection-bot-msg.png)
+
 ## Opcional: envio de e-mail
 
 No tines procure pelo componente de *Send Email*
